@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Reply Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #chat-container {
+            width: 400px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        #chat-box {
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            border-bottom: 1px solid #dddddd;
+        }
+        .message {
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        .user-message {
+            background: #d1e7dd;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .bot-message {
+            background: #f8d7da;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+        #input-container {
+            display: flex;
+            padding: 10px;
+            background: #f1f1f1;
+        }
+        #user-input {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        #send-button {
+            padding: 10px 15px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #send-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div id="chat-container">
+    <div id="chat-box"></div>
+    <div id="input-container">
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button id="send-button">Send</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+
+    sendButton.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        const message = userInput.value.trim();
+        if (message) {
+            displayMessage(message, 'user-message');
+            userInput.value = '';
+            const botResponse = getBotResponse(message);
+            setTimeout(() => {
+                displayMessage(botResponse, 'bot-message');
+            }, 500);
+        }
+    }
+
+    function getBotResponse(message) {
+        message = message.toLowerCase();
+        if (message.includes('hello') || message.includes('hi')) {
+            return 'Hello! How can I help you today?';
+        } else if (message.includes('how are you')) {
+            return 'I\'m fine, how are you!';
+        } else if (message.includes('bye')) {
+            return 'Goodbye! Have a great day!';
+        } else {
+            return 'I\'m not sure how to respond to that.';
+        }
+    }
+
+    function displayMessage(message, className) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${className}`;
+        msgDiv.textContent = message;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll to the bottom
+    }
+</script>
+
+</body>
+</html>
